@@ -16,7 +16,10 @@ public class MenuComidas {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        System.out.println("Hola Mundo");
+        Inicio ver = new Inicio();
+        ver.setVisible(true);
+        ver.setLocationRelativeTo(null);
+                
     }
     
 }
