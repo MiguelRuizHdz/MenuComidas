@@ -73,7 +73,7 @@
                           </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="llbFoto" min="-2" pref="170" max="-2" attributes="0"/>
+                      <Component id="lblFoto" min="-2" pref="170" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -111,7 +111,7 @@
                       <EmptySpace type="separate" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="llbFoto" min="-2" pref="170" max="-2" attributes="0"/>
+                      <Component id="lblFoto" min="-2" pref="170" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -212,7 +212,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSeleccionarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="llbFoto">
+    <Component class="javax.swing.JLabel" name="lblFoto">
     </Component>
     <Component class="javax.swing.JComboBox" name="jComboBox1">
       <Properties>

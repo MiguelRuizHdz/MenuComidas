@@ -1,8 +1,12 @@
 package menucomidas;
 
+import com.mysql.jdbc.PreparedStatement;
+import java.awt.Image;
 import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -50,7 +54,7 @@ public class Comidas extends javax.swing.JFrame {
         txtPrecio = new javax.swing.JTextField();
         txtNameImg = new javax.swing.JTextField();
         btnSeleccionar = new javax.swing.JButton();
-        llbFoto = new javax.swing.JLabel();
+        lblFoto = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -136,7 +140,7 @@ public class Comidas extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnSeleccionar))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(llbFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -165,7 +169,7 @@ public class Comidas extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(llbFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
@@ -184,6 +188,12 @@ public class Comidas extends javax.swing.JFrame {
             //CON ESTA LINEA DE CODIGO, LE ESTAMOS DICIENDO QUE NOS ABRA LA CONEXION A LA BASE DE DATOS.
             Connection conexion = Conexion.getConnection();
             ResultSet rs = null;
+            String insertar = "INSERT INTO `comida` (`nombre_comi`, `precio_comi`, `tipo_comi`, `descripción_comi`, `imagen_comi`) VALUES ( ?, '50.00', ?, ?, ?)";
+//            try{
+//                //FileInputStream archivofoto;
+//                //PreparedStatement pst = conexion.prepareStatement(insertar);
+//            }catch(SQLException ex){
+//            }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
@@ -195,7 +205,11 @@ public class Comidas extends javax.swing.JFrame {
         archivo.setCurrentDirectory(ruta);
         int ventana = archivo.showOpenDialog(null);
         if(ventana == JFileChooser.APPROVE_OPTION){
-            
+            File file = archivo.getSelectedFile();
+            txtNameImg.setText(String.valueOf(file));
+            Image foto = getToolkit().getImage(txtNameImg.getText());
+            foto = foto.getScaledInstance(170, 170, Image.SCALE_DEFAULT);
+            lblFoto.setIcon(new ImageIcon(foto));
         }
         
         
@@ -248,7 +262,7 @@ public class Comidas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel llbFoto;
+    private javax.swing.JLabel lblFoto;
     private javax.swing.JTextArea txtDescripcion;
     private javax.swing.JTextField txtNameImg;
     private javax.swing.JTextField txtNombre;
