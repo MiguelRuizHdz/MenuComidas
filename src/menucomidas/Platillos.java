@@ -5,16 +5,90 @@
  */
 package menucomidas;
 
+import com.mysql.jdbc.Blob;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
 /**
  *
  * @author Miguel Ruiz
  */
 public class Platillos extends javax.swing.JFrame {
 
+    String titulos[] = {"Nombre", "Tipo", "Imagen", "Postre"};
+    Object fila[] = new String[4];
+    
+    DefaultTableModel modelo;
+    Statement stmt = null;
+
     public Platillos() {
         initComponents();
         //COMANDO PARA HACER GRANDE LA GUI.
         setExtendedState(MAXIMIZED_BOTH);
+        consultaComida(tblComida);
+    }
+
+    public void consultaComida(JTable tabla) {
+        Connection conexion = Conexion.getConnection();
+        tabla.setDefaultRenderer(Object.class, new TablaImagen());
+        try {
+            if (conexion != null) {
+                System.out.println("Se ha establecido una conexion con la base de datos" + "\n" + "Menu");
+            }
+            stmt = conexion.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT nombre_comi, tipo_comi,imagen_comi,imagen_post FROM comida JOIN postre");
+            modelo = new DefaultTableModel(null, titulos);
+            while (rs.next()) {
+                fila[0] = rs.getObject("nombre_comi");
+                fila[1] = rs.getObject("tipo_comi");
+                //Comida
+                java.sql.Blob blob = rs.getBlob(3);
+
+                byte[] data = blob.getBytes(1, (int) blob.length());
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(new ByteArrayInputStream(data));
+                } catch (Exception ex) {
+                }
+                ImageIcon icono = new ImageIcon(img);
+
+                fila[2] = new JLabel(icono);
+                //Postre
+                java.sql.Blob blob1 = rs.getBlob(3);
+
+                byte[] data1 = blob.getBytes(1, (int) blob1.length());
+                BufferedImage img1 = null;
+                try {
+                    img = ImageIO.read(new ByteArrayInputStream(data1));
+                } catch (Exception ex) {
+                }
+                ImageIcon icono1 = new ImageIcon(img1);
+
+                fila[3] = new JLabel(icono1);
+                
+
+                modelo.addRow(fila);
+            }
+            tblComida.setModel(modelo);
+            tblComida.setRowHeight(64);
+            
+            TableColumn cn = tblComida.getColumn("Nombre");
+            TableColumn ct = tblComida.getColumn("Tipo");
+            TableColumn ci = tblComida.getColumn("Imagen");
+            TableColumn cp = tblComida.getColumn("Postre");
+        } catch (SQLException e) {
+            System.out.println("Error al visualizar en la tabla " +e);
+        }
     }
 
     /**
@@ -47,6 +121,10 @@ public class Platillos extends javax.swing.JFrame {
             }
         ));
         jScrollPane1.setViewportView(tblComida);
+        if (tblComida.getColumnModel().getColumnCount() > 0) {
+            tblComida.getColumnModel().getColumn(2).setMinWidth(100);
+            tblComida.getColumnModel().getColumn(2).setMaxWidth(100);
+        }
 
         tblComplemento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
