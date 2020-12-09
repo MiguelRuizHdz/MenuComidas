@@ -4,10 +4,15 @@ import com.mysql.jdbc.PreparedStatement;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /*
@@ -29,7 +34,7 @@ public class Comidas extends javax.swing.JFrame {
         initComponents();
     }
 
-    //INSERT INTO `comida` (`nombre_comi`, `precio_comi`, `tipo_comi`, `descripción_comi`, `imagen_comi`) VALUES ( ?, '50.00', ?, ?, ?)
+    //INSERT INTO `comida` (`nombre_comi`, `precio_comi`, `tipo_comi`, `descripción_comi`, `imagen_comi`) VALUES ( ?, ?, ?, ?, ?)
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,7 +60,7 @@ public class Comidas extends javax.swing.JFrame {
         txtNameImg = new javax.swing.JTextField();
         btnSeleccionar = new javax.swing.JButton();
         lblFoto = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbTipo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,7 +101,7 @@ public class Comidas extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Individual", "Doble", "Familiar" }));
+        cbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Individual", "Doble", "Familiar" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,7 +135,7 @@ public class Comidas extends javax.swing.JFrame {
                                 .addGap(101, 101, 101))
                             .addComponent(jLabel3))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
                                 .addComponent(txtNombre)
@@ -162,7 +167,7 @@ public class Comidas extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
@@ -188,12 +193,27 @@ public class Comidas extends javax.swing.JFrame {
             //CON ESTA LINEA DE CODIGO, LE ESTAMOS DICIENDO QUE NOS ABRA LA CONEXION A LA BASE DE DATOS.
             Connection conexion = Conexion.getConnection();
             ResultSet rs = null;
-            String insertar = "INSERT INTO `comida` (`nombre_comi`, `precio_comi`, `tipo_comi`, `descripción_comi`, `imagen_comi`) VALUES ( ?, '50.00', ?, ?, ?)";
-//            try{
-//                //FileInputStream archivofoto;
-//                //PreparedStatement pst = conexion.prepareStatement(insertar);
-//            }catch(SQLException ex){
-//            }
+            String insertar = "INSERT INTO `comida` (`nombre_comi`, `precio_comi`, `tipo_comi`, `descripción_comi`, `imagen_comi`) VALUES ( ?, ?, ?, ?, ?)";
+            try{
+                FileInputStream archivofoto;
+                java.sql.PreparedStatement pst = conexion.prepareStatement(insertar);
+                pst.setString(1, txtNombre.getText());
+                pst.setString(2, txtPrecio.getText());
+                pst.setString(3, cbTipo.getSelectedItem().toString());
+                pst.setString(4, txtDescripcion.getText());
+                archivofoto = new FileInputStream(txtNameImg.getText());
+                pst.setBinaryStream(5, archivofoto);
+                
+                int i=pst.executeUpdate();
+                if(i>0){
+                    JOptionPane.showMessageDialog(null, "Se guardo correctamente");
+                }
+                
+            }catch(SQLException ex){
+                Logger.getLogger(Comidas.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (FileNotFoundException ex) {
+            Logger.getLogger(Comidas.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
@@ -201,8 +221,6 @@ public class Comidas extends javax.swing.JFrame {
         JFileChooser archivo = new JFileChooser();
         archivo.addChoosableFileFilter(filtro);
         archivo.setDialogTitle("Escoge una imagen");
-        File ruta = new File("D:/unam 2020");
-        archivo.setCurrentDirectory(ruta);
         int ventana = archivo.showOpenDialog(null);
         if(ventana == JFileChooser.APPROVE_OPTION){
             File file = archivo.getSelectedFile();
@@ -211,8 +229,6 @@ public class Comidas extends javax.swing.JFrame {
             foto = foto.getScaledInstance(170, 170, Image.SCALE_DEFAULT);
             lblFoto.setIcon(new ImageIcon(foto));
         }
-        
-        
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     /**
@@ -253,7 +269,7 @@ public class Comidas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnSeleccionar;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cbTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
