@@ -57,15 +57,16 @@ public class Inicio extends javax.swing.JFrame {
         menuItem_comida.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                
+                Comidas comida= new Comidas();
+                comida.setVisible(true);
             }
         });
         //EVENTOS DEL MENU
         menuItem_complemento.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                //PerfilUsuario perfil = new PerfilUsuario();
-                //perfil.setVisible(true);
+                Complementos comp = new Complementos();
+                comp.setVisible(true);
             }
         });
         //EVENTOS DEL MENU
@@ -79,6 +80,9 @@ public class Inicio extends javax.swing.JFrame {
     public Inicio() {
         crearMenu();
         initComponents();
+        setTitle("Inicio");
+        setLocationRelativeTo(null);
+        setResizable(false);
     }
 
     /**

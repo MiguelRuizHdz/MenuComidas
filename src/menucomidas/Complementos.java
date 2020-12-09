@@ -13,15 +13,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author Miguel Ruiz
- */
 public class Complementos extends javax.swing.JFrame {
 
     /**
@@ -63,7 +54,7 @@ public class Complementos extends javax.swing.JFrame {
         cbTamComp = new javax.swing.JComboBox<>();
         cbSabComp = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -228,7 +219,13 @@ public class Complementos extends javax.swing.JFrame {
                 if (i > 0) {
                     JOptionPane.showMessageDialog(null, "Se guardo correctamente");
                 }
-
+                
+                //PARA BORRAR LAS CAJAS DE TEXTO
+                txtNombre.setText("");
+                txtPrecio.setText("");
+                txtDescripcion.setText("");
+                txtNameImg.setText("");
+                
             } catch (SQLException | FileNotFoundException ex) {
                 Logger.getLogger(Complementos.class.getName()).log(Level.SEVERE, null, ex);
             }
