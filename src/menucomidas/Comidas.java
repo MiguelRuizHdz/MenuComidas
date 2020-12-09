@@ -1,12 +1,10 @@
 package menucomidas;
 
-import com.mysql.jdbc.PreparedStatement;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +18,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Miguel Ruiz
@@ -32,10 +29,12 @@ public class Comidas extends javax.swing.JFrame {
      */
     public Comidas() {
         initComponents();
+        setTitle("Registro de Comidas.");
+        setLocationRelativeTo(null);
+        setResizable(false);
     }
 
     //INSERT INTO `comida` (`nombre_comi`, `precio_comi`, `tipo_comi`, `descripción_comi`, `imagen_comi`) VALUES ( ?, ?, ?, ?, ?)
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -190,11 +189,19 @@ public class Comidas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-            //CON ESTA LINEA DE CODIGO, LE ESTAMOS DICIENDO QUE NOS ABRA LA CONEXION A LA BASE DE DATOS.
-            Connection conexion = Conexion.getConnection();
-            ResultSet rs = null;
+        //CON ESTA LINEA DE CODIGO, LE ESTAMOS DICIENDO QUE NOS ABRA LA CONEXION A LA BASE DE DATOS.
+        Connection conexion = Conexion.getConnection();
+        //
+        String nombreComida = txtNombre.getText();
+        String precioComida = txtPrecio.getText();
+        String descrip = txtDescripcion.getText();
+        String foto = txtNameImg.getText();
+        
+        if (nombreComida.equals("") && precioComida.equals("") && descrip.equals("") && foto.equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe de llenar todos los campos de registro!.");
+        } else {
             String insertar = "INSERT INTO `comida` (`nombre_comi`, `precio_comi`, `tipo_comi`, `descripción_comi`, `imagen_comi`) VALUES ( ?, ?, ?, ?, ?)";
-            try{
+            try {
                 FileInputStream archivofoto;
                 java.sql.PreparedStatement pst = conexion.prepareStatement(insertar);
                 pst.setString(1, txtNombre.getText());
@@ -203,26 +210,27 @@ public class Comidas extends javax.swing.JFrame {
                 pst.setString(4, txtDescripcion.getText());
                 archivofoto = new FileInputStream(txtNameImg.getText());
                 pst.setBinaryStream(5, archivofoto);
-                
-                int i=pst.executeUpdate();
-                if(i>0){
+
+                int i = pst.executeUpdate();
+                if (i > 0) {
                     JOptionPane.showMessageDialog(null, "Se guardo correctamente");
                 }
-                
-            }catch(SQLException ex){
+
+            } catch (SQLException | FileNotFoundException ex) {
                 Logger.getLogger(Comidas.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (FileNotFoundException ex) {
-            Logger.getLogger(Comidas.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
+
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Formatos de Archivos Imagen(*.JPG;*.JPEG;*.PNG)", "jpg","jpeg","png");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Formatos de Archivos Imagen(*.JPG;*.JPEG;*.PNG)", "jpg", "jpeg", "png");
         JFileChooser archivo = new JFileChooser();
         archivo.addChoosableFileFilter(filtro);
         archivo.setDialogTitle("Escoge una imagen");
         int ventana = archivo.showOpenDialog(null);
-        if(ventana == JFileChooser.APPROVE_OPTION){
+        if (ventana == JFileChooser.APPROVE_OPTION) {
             File file = archivo.getSelectedFile();
             txtNameImg.setText(String.valueOf(file));
             Image foto = getToolkit().getImage(txtNameImg.getText());
@@ -260,6 +268,7 @@ public class Comidas extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Comidas().setVisible(true);
             }
