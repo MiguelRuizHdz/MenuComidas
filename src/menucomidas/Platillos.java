@@ -26,7 +26,7 @@ import javax.swing.table.TableColumn;
 public class Platillos extends javax.swing.JFrame {
 
     String titulos[] = {"Nombre", "Tipo", "Imagen", "Postre"};
-    Object fila[] = new String[4];
+    Object fila[] = new Object[4];
     
     DefaultTableModel modelo;
     Statement stmt = null;
@@ -52,6 +52,7 @@ public class Platillos extends javax.swing.JFrame {
                 fila[0] = rs.getObject("nombre_comi");
                 fila[1] = rs.getObject("tipo_comi");
                 //Comida
+                /*
                 java.sql.Blob blob = rs.getBlob(3);
 
                 byte[] data = blob.getBytes(1, (int) blob.length());
@@ -62,7 +63,10 @@ public class Platillos extends javax.swing.JFrame {
                 }
                 ImageIcon icono = new ImageIcon(img);
 
-                fila[2] = new JLabel(icono);
+                //fila[2] = new JLabel(icono);
+                //row[1] = new JLabel(icono);
+                //fila[2] = icono;
+
                 //Postre
                 java.sql.Blob blob1 = rs.getBlob(3);
 
@@ -71,11 +75,13 @@ public class Platillos extends javax.swing.JFrame {
                 try {
                     img = ImageIO.read(new ByteArrayInputStream(data1));
                 } catch (Exception ex) {
+                    
                 }
                 ImageIcon icono1 = new ImageIcon(img1);
 
-                fila[3] = new JLabel(icono1);
-                
+                //fila[3] = new JLabel(icono1);
+                //fila[3] = icono1;
+                */
 
                 modelo.addRow(fila);
             }
@@ -84,8 +90,8 @@ public class Platillos extends javax.swing.JFrame {
             
             TableColumn cn = tblComida.getColumn("Nombre");
             TableColumn ct = tblComida.getColumn("Tipo");
-            TableColumn ci = tblComida.getColumn("Imagen");
-            TableColumn cp = tblComida.getColumn("Postre");
+            //TableColumn ci = tblComida.getColumn("Imagen");
+            //TableColumn cp = tblComida.getColumn("Postre");
         } catch (SQLException e) {
             System.out.println("Error al visualizar en la tabla " +e);
         }
