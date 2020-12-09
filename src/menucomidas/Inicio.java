@@ -51,6 +51,7 @@ public class Inicio extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent evt) {
                 Menu verMenu = new Menu();
                 verMenu.setVisible(true);
+                verMenu.setLocationRelativeTo(null);
             }
         });
         //EVENTOS DEL MENU
@@ -67,13 +68,18 @@ public class Inicio extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent evt) {
                 Complementos comp = new Complementos();
                 comp.setVisible(true);
+                Complementos agregarcomplemento = new Complementos();
+                agregarcomplemento.setVisible(true);
+                agregarcomplemento.setLocationRelativeTo(null);
             }
         });
         //EVENTOS DEL MENU
         menuItem_hacer_platillo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                
+                Platillos hacerplatillo = new Platillos();
+                hacerplatillo.setVisible(true);
+                hacerplatillo.setLocationRelativeTo(null);
             }
         });
     }
