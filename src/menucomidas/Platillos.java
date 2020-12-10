@@ -25,20 +25,21 @@ import javax.swing.table.TableColumn;
  */
 public class Platillos extends javax.swing.JFrame {
 
-    String titulos[] = {"Nombre", "Tipo", "Imagen", "Postre"};
-    Object fila[] = new Object[4];
+    String ruta = null;
+    //String titulos[] = {"Nombre", "Tipo", "Imagen", "Postre"};
+    //Object fila[] = new Object[4];
     
-    DefaultTableModel modelo;
-    Statement stmt = null;
+   // DefaultTableModel modelo;
+    //Statement stmt = null;
 
     public Platillos() {
         initComponents();
         //COMANDO PARA HACER GRANDE LA GUI.
         setExtendedState(MAXIMIZED_BOTH);
-        consultaComida(tblComida);
+        //consultaComida(tblComida);
     }
 
-    public void consultaComida(JTable tabla) {
+    /* public void consultaComida(JTable tabla) {
         Connection conexion = Conexion.getConnection();
         tabla.setDefaultRenderer(Object.class, new TablaImagen());
         try {
@@ -52,7 +53,7 @@ public class Platillos extends javax.swing.JFrame {
                 fila[0] = rs.getObject("nombre_comi");
                 fila[1] = rs.getObject("tipo_comi");
                 //Comida
-                /*
+               
                 java.sql.Blob blob = rs.getBlob(3);
 
                 byte[] data = blob.getBytes(1, (int) blob.length());
@@ -81,7 +82,7 @@ public class Platillos extends javax.swing.JFrame {
 
                 //fila[3] = new JLabel(icono1);
                 //fila[3] = icono1;
-                */
+                
 
                 modelo.addRow(fila);
             }
@@ -96,6 +97,7 @@ public class Platillos extends javax.swing.JFrame {
             System.out.println("Error al visualizar en la tabla " +e);
         }
     }
+    */
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -112,6 +114,7 @@ public class Platillos extends javax.swing.JFrame {
         tblComplemento = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
+        btnConsultar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -150,6 +153,13 @@ public class Platillos extends javax.swing.JFrame {
 
         btnAgregar.setText("AGREGAR");
 
+        btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,7 +176,9 @@ public class Platillos extends javax.swing.JFrame {
                         .addGap(411, 411, 411)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(456, 456, 456)
+                        .addGap(244, 244, 244)
+                        .addComponent(btnConsultar)
+                        .addGap(139, 139, 139)
                         .addComponent(btnAgregar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -180,12 +192,19 @@ public class Platillos extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
-                .addComponent(btnAgregar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAgregar)
+                    .addComponent(btnConsultar))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        VisualizarTablas v = new VisualizarTablas();
+        v.visualizar_tablaComida(tblComida);
+    }//GEN-LAST:event_btnConsultarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -225,6 +244,7 @@ public class Platillos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnConsultar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
